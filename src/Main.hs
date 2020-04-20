@@ -17,7 +17,7 @@ main = do
     )
     `E.catch` handler
 
-handler e@(SomeException f) = putStrLn ("An error occured:\n\t" ++ show f)
+handler e@(SomeException f) = putStrLn ("An error occurred:\n\t" ++ show f)
 
 showNotification :: Notification -> IO ()
 showNotification n = putStrLn $ show n ++ "\n  " ++ unpack ((url . subject) n)
