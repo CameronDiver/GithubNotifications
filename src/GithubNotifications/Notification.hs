@@ -52,6 +52,20 @@ data Repository = Repository {
 } deriving (Show,Generic)
 instance FromJSON Repository
 
+data PullRequest = PullRequest {
+    url :: !Text
+  , html_url :: !Text
+  , state :: !Text
+  , user :: User
+} deriving (Show,Generic)
+instance FromJSON PullRequest
+
+
+data User = User {
+    login :: !Text
+  , url :: !Text
+} deriving (Show,Generic)
+instance FromJSON User
 
 notificationReasonToEmoji :: Text -> Text
 notificationReasonToEmoji t = T.append
