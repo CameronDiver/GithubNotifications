@@ -18,13 +18,8 @@ notificationEndpoint = "https://api.github.com/notifications"
 
 type NotificationResponse = Response [Notification]
 
-getNotifications :: IO [Notification]
-getNotifications = do
-  ghAuth <- getAuth
-  let (GithubAuthentication user pass) =
-        fromMaybe (error "Could not read authorisation from auth.json") ghAuth
+getNotifications :: GithubAuthentication -> IO [Notification]
+getNotifications (GithubAuthentication user pass) = do
   let opts = defaults & auth ?~ basicAuth (encodeUtf8 user) (encodeUtf8 pass)
   req <- asJSON =<< getWith opts notificationEndpoint
   return (req ^. W.responseBody)
-
-

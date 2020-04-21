@@ -1,0 +1,8 @@
+cradle:
+  stack:
+    - path: './lib'
+      component: GithubNotifications:lib
+    - path: './src/cli'
+      component: GithubNotifications:exe:github-notifications
+    - path: './src/daemon'
+      component: GithubNotifications:exe:github-notification-daemon
