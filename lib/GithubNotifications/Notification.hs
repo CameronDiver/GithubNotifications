@@ -23,17 +23,16 @@ data Notification = Notification {
   , last_read_at :: Maybe Text
   , subject :: NotificationSubject
   , repository :: Repository
-} deriving (Generic)
-
-instance FromJSON Notification
+} deriving (Generic,FromJSON,ToJSON)
 
 data NotificationSubject = NotificationSubject {
     title :: !Text
   , url :: !Text
   , commitUrl :: Maybe Text
   , nType :: !Text
-} deriving (Show)
+} deriving (Show,Generic)
 
+-- Write the instances by hand here, because of the "type" field
 instance FromJSON NotificationSubject where
   parseJSON (Object v) =
     NotificationSubject
@@ -46,11 +45,15 @@ instance FromJSON NotificationSubject where
       <*> v
       .:  "type"
 
+instance ToJSON NotificationSubject where
+  toJSON (NotificationSubject t u c nT) =
+    object ["title" .= t, "url" .= u, "latest_commit_url" .= c, "type" .= nT]
+
+
 data Repository = Repository {
   -- id :: !Text (can't reuse)
   full_name :: !Text
-} deriving (Show,Generic)
-instance FromJSON Repository
+} deriving (Show,Generic,FromJSON,ToJSON)
 
 
 notificationReasonToEmoji :: Text -> Text

@@ -1,5 +1,5 @@
 name:                GithubNotifications
-version:             0.1.0.0
+version:             0.2.0.0
 -- synopsis:
 -- description:
 homepage:            https://github.com/CameronDiver/GithubNotifications#readme
@@ -13,23 +13,51 @@ build-type:          Simple
 cabal-version:       >=1.10
 extra-source-files:  README.md
 
-executable github-notifications
-  hs-source-dirs:      src
-  main-is:             Main.hs
-  other-modules:       GithubNotifications.API
-                     , GithubNotifications.Auth
-                     , GithubNotifications.Notification
+Library
   default-language:    Haskell2010
-  default-extensions:  OverloadedStrings
-                     , DeriveGeneric
-                     , DuplicateRecordFields
-  build-depends:       base >= 4.7 && < 5
-                     , wreq
-                     , lens
-                     , bytestring
-                     , aeson
-                     , text
-                     , pretty-terminal
-                     , http-client
-                     , utf8-string
-                     , directory
+  hs-source-dirs:       lib
+  exposed-modules:      GithubNotifications.API
+                      , GithubNotifications.Auth
+                      , GithubNotifications.Notification
+  default-extensions:   OverloadedStrings
+                      , DeriveGeneric
+                      , DuplicateRecordFields
+                      , DeriveAnyClass
+  build-depends:        base >= 4.7 && < 5
+                      , wreq
+                      , lens
+                      , bytestring
+                      , aeson
+                      , text
+                      , pretty-terminal
+                      , http-client
+                      , utf8-string
+                      , directory
+
+executable github-notifications
+  hs-source-dirs:       src/cli
+  main-is:              Main.hs
+  default-language:     Haskell2010
+  default-extensions:   OverloadedStrings
+                      , DeriveGeneric
+                      , DuplicateRecordFields
+  build-depends:        base >= 4.7 && < 5
+                      , GithubNotifications
+                      , text
+                      , wreq
+                      , lens
+
+executable github-notification-daemon
+  hs-source-dirs:       src/daemon
+  main-is:              Main.hs
+  default-language:     Haskell2010
+  default-extensions:   OverloadedStrings
+                      , DeriveGeneric
+                      , DuplicateRecordFields
+  build-depends:        base >= 4.7 && < 5
+                      , GithubNotifications
+                      , text
+                      , firefly
+                      , transformers
+                      , aeson
+                      , wai

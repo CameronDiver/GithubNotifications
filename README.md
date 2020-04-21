@@ -20,11 +20,26 @@ and personal access token:
 Note that the personal access token requires the scopes
 notifications and repos.
 
+Start the notification daemon which will periodically check
+for notifications:
+
+```
+github-notifications-daemon &
+```
+
 Then simply call the binary:
 
 ```
 $ github-notifications
 ```
+
+### Why a daemon?
+
+I made this to add the end of my `~/.zshrc` to display my
+github notifications with every new shell. The lookup from
+API PR URL to browser URL is too long for my purposes, so
+having it cached in memory and requested from the daemon is
+much quicker.
 
 ## Installing
 
@@ -48,12 +63,11 @@ $ stack build
 $ stack install
 ```
 
-This will place the binary into `~/.local/bin` (at least on
+This will place the binaries into `~/.local/bin` (at least on
 my system).
 
 ## TODO
 
 - Cache the calls to `getEnv` and `lookupEnv`
-- Pass the etag back to Github to use cached values (will
-  require caching notifications locally)
+- Pass the etag back to Github to use cached values
 - Support pagination (maybe use a github library)
