@@ -13,7 +13,7 @@ getNotifications = do
 
 main :: IO ()
 main = do
-  putStrLn "Github notifications:"
+  putStrLn "Github notifications: https://github.com/notifications"
   body <- getNotifications
   mapM_ showNotification body
 
