@@ -1,8 +1,6 @@
 module GithubNotifications.Notification where
 
-import           Data.Maybe
 import           Data.Text                     as T
-import           Data.ByteString.Lazy
 import           Data.Aeson
 import           GHC.Generics
 import           Text.Printf
@@ -44,6 +42,7 @@ instance FromJSON NotificationSubject where
       .:? "latest_commit_url"
       <*> v
       .:  "type"
+  parseJSON _ = error "Could not parse notification subject"
 
 instance ToJSON NotificationSubject where
   toJSON (NotificationSubject t u c nT) =
@@ -55,6 +54,24 @@ data Repository = Repository {
   full_name :: !Text
 } deriving (Show,Generic,FromJSON,ToJSON)
 
+data PullRequest = PullRequest {
+    url :: !Text
+  , html_url :: !Text
+  , state :: !Text
+  , user :: User
+} deriving (Show,Generic)
+instance FromJSON PullRequest
+
+
+data User = User {
+    login :: !Text
+  , url :: !Text
+} deriving (Show,Generic,ToJSON,FromJSON)
+
+data NotificationWithUrl = NotificationWithUrl {
+    url :: Text
+  , notification :: Notification
+} deriving (Show,Generic, ToJSON, FromJSON)
 
 notificationReasonToEmoji :: Text -> Text
 notificationReasonToEmoji t = T.append
@@ -75,8 +92,8 @@ notificationReasonToEmoji t = T.append
   " "
 
 instance Show Notification where
-  show (Notification id unread reason updated lra sub repo) = printf
+  show (Notification _ _ r _ _ sub repo) = printf
     "%s%s: %s"
-    (notificationReasonToEmoji reason)
+    (notificationReasonToEmoji r)
     (color Green $ full_name repo)
     (style Bold $ title sub)

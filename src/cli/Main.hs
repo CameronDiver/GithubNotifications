@@ -1,12 +1,12 @@
 module Main where
 
 import           Control.Lens
-import           Data.Text
 import           Network.Wreq                  as W
+import           Text.Printf
 
 import           GithubNotifications.Notification
 
-getNotifications :: IO [Notification]
+getNotifications :: IO [NotificationWithUrl]
 getNotifications = do
   req <- asJSON =<< get "http://localhost:3000/notifications"
   return (req ^. W.responseBody)
@@ -17,5 +17,5 @@ main = do
   body <- getNotifications
   mapM_ showNotification body
 
-showNotification :: Notification -> IO ()
-showNotification = print
+showNotification :: NotificationWithUrl -> IO ()
+showNotification (NotificationWithUrl u n) = printf "%s\n\t%s\n" (show n) u
