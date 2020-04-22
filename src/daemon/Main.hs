@@ -53,7 +53,7 @@ main = do
   _   <- forkIO $ fetchAndStore (fromJust maybeAuth) var
 
   -- TODO: make the port configurable
-  run 3000 $ app var
+  run 7123 $ app var
 
 
 

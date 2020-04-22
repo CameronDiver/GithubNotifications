@@ -8,7 +8,7 @@ import           GithubNotifications.Notification
 
 getNotifications :: IO [NotificationWithUrl]
 getNotifications = do
-  req <- asJSON =<< get "http://localhost:3000/notifications"
+  req <- asJSON =<< get "http://localhost:7123/notifications"
   return (req ^. W.responseBody)
 
 main :: IO ()
