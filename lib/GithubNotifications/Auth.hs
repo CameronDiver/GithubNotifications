@@ -1,22 +1,22 @@
 module GithubNotifications.Auth where
-import           Control.Exception             as E
-import           Control.Monad
+
 import           Data.Aeson                    as A
 import           Data.ByteString.Lazy          as B
 import           Data.ByteString.Lazy.UTF8     as BU
-import           Data.ByteString.Internal
-import           Data.Text
 import           Data.Maybe
+import           Data.Text
 import           GHC.Generics
 import           System.Directory
 import           System.Environment
 
-import           Debug.Trace                    ( traceShow )
+data GithubAuthentication =
+  GithubAuthentication
+    { username :: Text
+    , token :: Text
+    }
+  deriving (Generic)
 
-data GithubAuthentication = GithubAuthentication { username :: Text, token :: Text }
-  deriving Generic
 instance FromJSON GithubAuthentication
-
 
 -- Maybe cache these lookups
 getConfigDirectory :: IO BU.ByteString
